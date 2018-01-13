@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>It's Hurricane Season!</title>
+<link rel="stylesheet" href="styles/styles.css">
+<link rel="manifest" href="manifest.json">
+</head>
+<body class="mobil">
+<main>
+<div id="container">
+	<div id="debug"></div>
+	<div id="main">
+		<div id="content"></div>
+		<div id="overlays">
+			<div id="hudOverlay">
+				<div id="points"></div>
+			</div>
+			<div id="startOverlay"></div>
+			<div id="overOverlay">
+				<br>
+				<h2>Gameover!</h2>
+				<p>
+					Hurricane Maria has swept you away, but there's still a chance to save others.
+					Puerto Rico is NOT receiving enough help. Show your support by sharing this game,
+					or by making donations here:
+				</p>
+				<a href="http://www.pbs.org/newshour/rundown/can-help-hurricane-victims-puerto-rico/">Donations</a>
+				<h3>Get Informed!</h3>
+				<ul>
+					<li>Learn more about our current method for disaster recovery.</li>
+					<li>Study the science of hurricanes and other natural events.</li>
+					<li>Investigate how donations help those in needs.</li>
+				</ul>
+				<button onclick="gameRestart()">Click here to play again!</button>
+			</div>
+		</div>
+	</div>
+	<div id="tydo">
+		<ul>
+			<li>Intro, drop slowly</li>
+			<li>Slowly increase speed and drop rate</li>
+			<li>Start dropping rewards</li>
+			<li>Increase speed to normal good fun speed</li>
+			<li>Start enemies appearing</li>
+			<li>The calm before the storm (no wind at all)</li>
+			<li>Storm! lots of enemies, high speed drop and spawn rate, lots of supplies</li>
+			<li>Back to normal, and increase enemies</li>
+			<li>Keep repeating until a lot of enemies appear</li>
+			<li>Then storms start to drop hail and lightning</li>
+			<li>Repeats this pattern increasing hail and lightning frequency until hard</li>
+			<li>Then weird ending enemies appear like nature sharks, big snowflakes, and big palm leaves</li>
+			<li>Intervals between normal and storms increase and frequency of enemies increase, and then the game should become almost unplayable</li>
+			<li>The last reward item type appears at this stage</li>
+			<li>Stages are based on points and maximum time limit before it auto turns</li>
+		</ul>
+		<ul>
+			<li>Hail</li>
+			<li>Lightning</li>
+			<li>Shark</li>
+			<li>Snowflake</li>
+			<li>Palm Leaf</li>
+		</ul>
+		<ul>
+			<li>Sound plays at end</li>
+			<li>Edges should  barely show person</li>
+			<li>Poppy parachute sound</li>
+			<li>Arrow keys to move too</li>
+			<li>Fix collision</li>
+			<li>No auto appear on top collision</li>
+			<li>Update messages (one for each type of stage you surpass?)</li>
+			<li>Reward sound when collected</li>
+			<li>Reward Special Effect yellow glimmer</li>
+			<li>Points effect when changed</li>
+		</ul>
+		<ul>
+			<li>Downsize all files</li>
+			<li>Image colors contrast</li>
+			<li>Image sizes are all unique</li>
+			<li>No slip on floor 180?</li>
+		</ul>
+	</div>
+</div>
+</main>
+<footer>
+	<p>Thanks to the following peeps!</p>
+	<ul>
+		<li><a href="http://soundbible.com/tags-wind.html">Wind sound by Mark DiAngelo</a></li>
+		<li><a href="http://soundbible.com/1601-Mario-Jumping.html">Jump sound by Mike Koenig</a></li>
+		<li><a href="http://soundbible.com/628-Flapping-Wings-3.html">Flap sound by Mike Koenig</a></li>
+	</ul>
+</footer>
+<audio id="wind">
+  <source src="sounds/wind.mp3" type="audio/mpeg">
+ </audio>
+ <audio id="jump">
+  <source src="sounds/jump.mp3" type="audio/mpeg">
+ </audio>
+  <audio id="flap">
+  <source src="sounds/flap.mp3" type="audio/mpeg">
+ </audio>
+<script src="scripts/config.js"></script>
+<script src="scripts/controls.js"></script>
+<script src="scripts/makes.js"></script>
+<script src="scripts/abilities.js"></script>
+<script src="runs/runPlayer.js"></script>
+<script src="runs/runGravity.js"></script>
+<script src="runs/runFriction.js"></script>
+<script src="runs/runVerticalWind.js"></script>
+<script src="runs/runFall.js"></script>
+<script src="runs/runCollidePlatform.js"></script>
+<script src="runs/runClean.js"></script>
+<script src="scripts/render.js"></script>
+<script src="scripts/game.js"></script>
+<script>
+	mainElement.click();
+	mainElement.click();
+	
+	function initialize() {
+		windAudio = document.getElementById('wind');
+		windAudio.volume = 0.1;
+		windAudio.loop = true;
+		windAudio.play();
+		jumpAudio = document.getElementById('jump');
+		jumpAudio.volume = 0.2;
+		flapAudio = document.getElementById('flap');
+		flapAudio.volume = 1.0;
+	}
+	initialize();
+	
+	function preload() {
+	}
+	preload();
+	
+	function prerender() {
+	}
+	prerender();
+	
+	function log(label, value) {
+		var element = document.getElementById(label);
+		if (!element) {
+			element = document.createElement('div');
+			element.id = label;
+			debug.appendChild(element);
+		}
+		element.innerHTML = label + ": " + value;
+	}
+	
+	var lastTimestamp = null;
+	var currentTimestamp = null;
+	var deltaTime = null;
+	var mod = 0;
+	function gameloop(timestamp) {
+		currentTimestamp = timestamp;
+		deltaTime = currentTimestamp - lastTimestamp;
+		mod = deltaTime / 1000;
+		log("mod", mod);
+		lastTimestamp = currentTimestamp;
+		game();
+		render(theObjects);
+		renderHud();
+		
+		window.requestAnimationFrame(gameloop);
+	}
+	window.requestAnimationFrame(gameloop);
+</script>
+</body>
