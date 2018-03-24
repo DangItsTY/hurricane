@@ -452,10 +452,13 @@ function dropReward(fall) {
 
 	newObject.x = x;
 	newObject.y = 0;
-	newObject.width = width;
+	newObject.width = width;	
 	newObject.element.style.width = newObject.width + "px";
 	theObjects.push(newObject);
 	renderAttach([newObject]);
+	if (newObject.element.height > 20) {
+		newObject.height = newObject.element.height;
+	}
 }
 var dropRewardTimer = setInterval(dropReward, 2000);
 clearInterval(dropRewardTimer);

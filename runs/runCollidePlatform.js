@@ -6,7 +6,6 @@ function runCollidePlatform(object, list) {
 		var target = list[i];
 		if (isCollidingAnywhere(object, target)) {
 			target.runCollide(object);
-			
 			specialStart(target);
 		}
 	}
